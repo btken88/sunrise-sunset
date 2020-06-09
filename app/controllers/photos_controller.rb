@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PhotosController < ApplicationController
-  before_action :find_user_by_id, only: %i[show update destroy]
+  before_action :find_photo_by_id, only: %i[show update destroy]
   def index
     @photos = Photo.all
     render json: @photos
