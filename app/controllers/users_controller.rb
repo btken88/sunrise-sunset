@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  before_action :find_user_by_id, only: %i[show update destroy]
+  before_action :find_user_by_id, only: %i[update destroy]
+  before_action :find_user_by_name
   def index
     @users = User.all
     render json: @users
@@ -12,17 +13,15 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.create(
-      first_name: params[:first_name],
-      last_name: params[:last_name]
+    @user = User.find_or_create_by(
+      username: params[:username]
     )
-    render json: @user
+    redirect_to "http://localhost:3001?user_id=#{@user.id}"
   end
 
   def update
     @user.update(
-      first_name: params[:first_name],
-      last_name: params[:last_name]
+      username: params[:username]
     )
     render json: @user
   end
@@ -34,5 +33,9 @@ class UsersController < ApplicationController
 
   def find_user_by_id
     @user = User.find(params[:id])
+  end
+
+  def find_user_by_name
+    @user = User.find_by(first_name: params[:first_name] && last_name: params[:last_name])
   end
 end
