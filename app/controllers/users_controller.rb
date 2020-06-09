@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     @user = User.find_or_create_by(
       username: params[:username]
     )
-    redirect_to "http://localhost:3001?user_id=#{@user.id}"
+    render json: @user
   end
 
   def update
